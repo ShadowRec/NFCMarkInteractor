@@ -11,7 +11,7 @@ NFCBaseClass::NFCBaseClass(QObject *parent)
                this, &NFCBaseClass::StartMarkInteraction);
 
        connect(_NFCmanager, &QNearFieldManager::targetLost,
-               this, &NFCBaseClass::handleTargetLost);
+               this, &NFCBaseClass::EndMarkInteraction);
 }
 
 void NFCBaseClass::StartMarkDetection()
@@ -24,4 +24,13 @@ void NFCBaseClass::StartMarkDetection()
     else {
         throw  std::string("NFC_Access_Error");
         }
+}
+
+void NFCBaseClass::EndMarkInteraction(QNearFieldTarget *target)
+{
+    if(_currentMark==target)
+    {
+        _currentMark=nullptr;
+    }
+    target->deleteLater();
 }

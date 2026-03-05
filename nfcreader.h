@@ -10,18 +10,15 @@ public:
      * @brief Конструктор класса
      */
     NFCReader();
+
     /**
-     * @brief Считать информацию с метки
-     */
-    void ReadMark();
-    /**
-     * @brief Функция перев
+     * @brief Функция перевода из NDEF в NFCInfo
      */
     void TranslateNDEFToNFCInfo();
     /**
      * @brief Запуск взаимодействия с меткой
      */
-    void StartMarkInteraction() override;
+    void StartMarkInteraction(QNearFieldTarget *target) override;
 };
 
 #endif // NFCREADER_H

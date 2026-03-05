@@ -2,5 +2,5 @@
 
 NFCReader::NFCReader()
 {
-
+    std::cout<<"Создан ридер.\n";
 }

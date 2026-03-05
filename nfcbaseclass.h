@@ -4,6 +4,7 @@
 #include <QNearFieldManager>
 #include <QNearFieldTarget>
 #include <QNdefMessage>
+#include <iostream>
 
 /**
  * @brief Базовый класс, содержащий код для запуска и
@@ -24,17 +25,11 @@ public:
     /**
      * @brief Запуск взаимодействия с меткой
      */
-    virtual void StartMarkInteraction()=0;
+    virtual void StartMarkInteraction(QNearFieldTarget *target)=0;
     /**
      * @brief Прерывание взаимодействия с меткой
      */
-    void EndMarkInteraction();
-
-    /**
-     * @brief Функция, что выполняет действия при потери
-     * соединения с меткой
-     */
-    void handleTargetLost();
+    void EndMarkInteraction(QNearFieldTarget *target);
 
 private:
     /**

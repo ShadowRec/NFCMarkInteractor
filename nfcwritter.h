@@ -14,18 +14,13 @@ public:
     NFCWritter();
 
     /**
-     * @brief Функция записи на метку
-     */
-    void WriteOnMark();
-
-    /**
      * @brief Перевод из класса NFCInfo в NDEF сообщение
      */
     void TranslateNFCInfoToNDEF();
     /**
      * @brief Запуск взаимодействия с меткой
      */
-    void StartMarkInteraction() override;
+    void StartMarkInteraction(QNearFieldTarget *target) override;
 };
 
 #endif // NFCWRITTER_H
