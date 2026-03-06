@@ -1,43 +1,50 @@
 #ifndef NFCMODULE_H
 #define NFCMODULE_H
 
+#include <QObject>
 
 /**
  * @brief Класс модуля, что отвечает за взаимодействия
  * с NFC модулем телефона  
  */
-class NFCModule
+class NFCModule:public QObject
 {
+    Q_OBJECT
 public:
     /**
      * @brief Конструктор класса
      */
     NFCModule();
+
     /**
-     * @brief Запуск процесса взаимодействия 
-     */
-    void StartInteraction();
-    /**
-     * @brief Запуск процесса поиска метки
-     */
-    void StarFieldScanning();
-    /**
-     * @brief Считывание информации с метки
-     */
-    void ParseInfo();
-    /**
-     * @brief Запись на метку
-     */
-    void WriteInfo();
-    /**
-     * @brief Перевод из NDEF сообщения в класс NFCInfo
-     */
-    void TranslateNDEFToNFCInfo();
-    
+    * @brief Начать чтение марки
+    */
+   void StartReading();
+
+   /**
+   * @brief Остановить чтение марки
+   */
+   void StopReading();
+
+   /**
+    * @brief Начать запись на марку
+    */
+   void StartWriting();
+
+   /**
+    * @brief Остановить запись на марку
+    */
+   void StopWriting();
+
 
 private:
     // NFCWritter _nfcWritter;
     // NFCReader _nfcReader;
+
+signals:
+    void StopWritingProcess();
+
+    void StopReadingProcess();
 };
 
 
