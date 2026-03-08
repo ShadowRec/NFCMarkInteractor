@@ -1,5 +1,6 @@
 QT += quick
 QT += nfc
+QT += core gui widgets
 CONFIG += c++11
 
 # You can make your code fail to compile if it uses deprecated APIs.
@@ -9,6 +10,7 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         nfcbaseclass.cpp \
+        nfcinterface.cpp \
         nfcmodule.cpp \
         nfcreader.cpp \
         nfcwritter.cpp
@@ -28,8 +30,12 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 HEADERS += \
     nfcbaseclass.h \
+    nfcinterface.h \
     nfcmodule.h \
     nfcreader.h \
     nfcwritter.h
 
 DISTFILES +=
+
+FORMS += \
+    nfcinterface.ui
