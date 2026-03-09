@@ -1,16 +1,23 @@
 #include "nfcreader.h"
 
-NFCReader::NFCReader()
+NFCReader::NFCReader(QObject *parent)
+    : NFCBaseClass(parent)
 {
     std::cout<<"Создан ридер.\n";
 }
 
-void NFCBaseClass::StartMarkInteraction(QNearFieldTarget *target)
+void NFCReader::StartMarkInteraction(QNearFieldTarget *target)
 {
        connect(target, &QNearFieldTarget::ndefMessageRead,
-               this, &NFCBaseClass::OnMarkInteractionSuccess);
-       connect(target, &QNearFieldTarget::error,
-               this, &NFCBaseClass::OnMarkInteractionFail);
+             this, [this](const QNdefMessage &message){
+           this->OnMarkInteractionSuccess(message);
+       });
+
+          connect(target, &QNearFieldTarget::error,
+                  this, [this](QNearFieldTarget::Error error,
+                              const QNearFieldTarget::RequestId &request) {
+                      this->OnMarkInteractionFail(error, request);
+                  });
 
         QNearFieldTarget::RequestId request = target->readNdefMessages();
 

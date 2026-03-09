@@ -2,7 +2,7 @@
 #define NFCREADER_H
 
 #include "nfcbaseclass.h"
-#include "nfcinfo.h"
+
 
 /**
  * @brief Класс отвечающий за чтение метки
@@ -16,12 +16,7 @@ public:
     /**
      * @brief Конструктор класса
      */
-    NFCReader();
-
-    /**
-     * @brief Функция перевода из NDEF в NFCInfo
-     */
-    void TranslateNDEFToNFCInfo();
+    NFCReader(QObject *parent);
 
 protected slots:
     /**

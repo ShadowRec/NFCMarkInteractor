@@ -54,6 +54,11 @@ void NFCInfo::SetComment(QString value)
     }
 }
 
+void NFCInfo::SetDate(QDate value)
+{
+    _date=value;
+}
+
 QByteArray NFCInfo::Serialize() const
 {
     QJsonObject obj;

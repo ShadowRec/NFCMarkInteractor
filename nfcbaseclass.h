@@ -7,6 +7,7 @@
 #include <QString>
 #include <QDebug>
 #include <iostream>
+#include "nfcinfo.h"
 
 /**
  * @brief Базовый класс, содержащий код для запуска и
@@ -38,11 +39,9 @@ protected slots:
      * @param target - ссылка на объект метки
      */
      virtual void StartMarkInteraction(QNearFieldTarget *target)=0;
-
     /**
-     * @brief Функция, что выполняет действия при
-     * успешном соединении
-     * @param target - ссылка на объект метки
+     * @brief При успехе операции
+     * @param message NDEF сообщение
      */
     virtual void OnMarkInteractionSuccess(const QNdefMessage &message)=0;
 

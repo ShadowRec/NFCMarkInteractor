@@ -1,6 +1,8 @@
 #include "nfcmodule.h"
 
-NFCModule::NFCModule()
+NFCModule::NFCModule(QObject *parent)
+:NFCBaseClass(parent)
 {
+    _nfcReader = new NFCReader();
 
 }

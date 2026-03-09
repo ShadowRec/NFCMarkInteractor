@@ -2,6 +2,8 @@
 #define NFCMODULE_H
 
 #include <QObject>
+#include <nfcreader.h>
+#include <nfcwritter.h>
 
 /**
  * @brief Класс модуля, что отвечает за взаимодействия
@@ -14,7 +16,7 @@ public:
     /**
      * @brief Конструктор класса
      */
-    NFCModule();
+    NFCModule(QObject *parent);
 
     /**
     * @brief Начать чтение марки
@@ -38,8 +40,8 @@ public:
 
 
 private:
-    // NFCWritter _nfcWritter;
-    // NFCReader _nfcReader;
+     NFCWritter _nfcWritter;
+     NFCReader _nfcReader;
 
 signals:
     void StopWritingProcess();

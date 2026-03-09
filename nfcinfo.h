@@ -61,7 +61,7 @@ public:
      * @brief Установить дату
      * @param value Дата в строковом формате
      */
-    void SetDate(QString value);
+    void SetDate(QDate value);
 
     /**
      * @brief Установить комментарий

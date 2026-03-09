@@ -82,6 +82,5 @@ void NFCBaseClass::OnMarkInteractionFail(QNearFieldTarget::Error error,
            errorMessage += QString("Unknown_err_code");
        }
 
-       // Выбрасываем наше кастомное исключение
        throw std::string(errorMessage.toStdString());
    }
