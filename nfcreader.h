@@ -3,46 +3,22 @@
 
 #include "nfcbaseclass.h"
 
-
-/**
- * @brief Класс отвечающий за чтение метки
- */
 class NFCReader: public NFCBaseClass
 {
-    Q_OBJECT
-
-      Q_PROPERTY(NFCInfo _nfcInfo MEMBER _nfcInfo)
 public:
     /**
      * @brief Конструктор класса
      */
-    NFCReader(QObject *parent);
+    NFCReader();
 
-protected slots:
     /**
-     * @brief Функция, что выполняет действия при
-     * успешном соединении
-     * @param target - ссылка на объект метки
+     * @brief Функция перевода из NDEF в NFCInfo
      */
-    void OnMarkInteractionSuccess(const QNdefMessage &message)
-    override;
-
+    void TranslateNDEFToNFCInfo();
     /**
      * @brief Запуск взаимодействия с меткой
-     * @param target - ссылка на объект метки
      */
-     void StartMarkInteraction(QNearFieldTarget *target)
-     override;
-
-private:
-     NFCInfo _nfcInfo;
-
-signals:
-     void InfoReadAndFormated();
+    void StartMarkInteraction(QNearFieldTarget *target) override;
 };
-
-
-
-
 
 #endif // NFCREADER_H
