@@ -10,6 +10,7 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         nfcbaseclass.cpp \
+        nfcinterface.cpp \
         nfcinfo.cpp \
         nfcmodule.cpp \
         nfcreader.cpp \
@@ -31,6 +32,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 HEADERS += \
     nfcbaseclass.h \
     nfcinfo.h \
+    nfcinterface.h \
     nfcmodule.h \
     nfcreader.h \
     nfcwritter.h
