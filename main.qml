@@ -5,6 +5,5 @@ Window {
     width: 640
     height: 480
     visible: true
-    color: "#ffffff"
-    title: qsTr("NFCMarkInteracor")
+    title: qsTr("Hello World")
 }
