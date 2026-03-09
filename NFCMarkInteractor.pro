@@ -1,5 +1,6 @@
 QT += quick
 QT += nfc
+QT += core gui widgets
 CONFIG += c++11
 
 # You can make your code fail to compile if it uses deprecated APIs.
@@ -35,3 +36,6 @@ HEADERS += \
     nfcwritter.h
 
 DISTFILES +=
+
+FORMS += \
+    nfcinterface.ui
