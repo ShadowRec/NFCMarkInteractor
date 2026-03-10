@@ -18,8 +18,6 @@ public:
     NFCInterface(QWidget *parent = nullptr);
     ~NFCInterface();
 
-    void resizeEvent(QResizeEvent *event) override;
-
 private slots:
     //Слоты для нажатия, отпускания кнопок
     void OnPushButtonReadPressed();
