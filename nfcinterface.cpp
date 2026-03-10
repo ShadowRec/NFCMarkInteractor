@@ -17,9 +17,9 @@ NFCInterface::NFCInterface(QWidget *parent) :
     // Настройка окна для Android
     setWindowTitle("NFC Метка");
 
-    // Убираем showMaximized() и делаем адаптивный размер
     QRect screenGeometry = QApplication::primaryScreen()->availableGeometry();
-    resize(screenGeometry.size());
+
+    setFixedSize(screenGeometry.size());
 
     // Настройка таймера
     detectionTimer->setSingleShot(true);
@@ -56,24 +56,26 @@ NFCInterface::~NFCInterface()
     delete ui;
 }
 
-void NFCInterface::resizeEvent(QResizeEvent *event)
-{
-    QMainWindow::resizeEvent(event);
-    AdjustLayout();  // При изменении размера перестраиваем
-}
-
 void NFCInterface::AdjustLayout()
 {
     int w = width();
     int h = height();
 
+    qDebug() << "Adjusting layout for size:" << w << "x" << h;
+
     // Отступы от краев
     int margin = w * 0.03;  // 3% от ширины
 
-    // Высота полей ввода (примерно 1/12 экрана на каждое поле)
+    // Высота полей ввода
     int formHeight = h * 0.5;  // 50% высоты под форму
 
-    // Устанавка геометрии для формы с параметрами
+    // Проверяем, что виджеты существуют
+    if (!ui->verticalLayoutWidget || !ui->labelStatus || !ui->horizontalLayoutWidget) {
+        qDebug() << "Error: Widgets not found!";
+        return;
+    }
+
+    // Устанавливаем геометрию для формы с параметрами
     ui->verticalLayoutWidget->setGeometry(
         margin,                  // x
         margin,                  // y
@@ -103,8 +105,9 @@ void NFCInterface::AdjustLayout()
         buttonHeight             // высота
     );
 
-    qDebug() << "Layout adjusted - Buttons at y:" << buttonY
-             << "Button height:" << buttonHeight;
+    qDebug() << "Layout adjusted - Form at y:" << margin
+             << "Status at y:" << statusY
+             << "Buttons at y:" << buttonY;
 }
 
 void NFCInterface::ApplyStyles()
@@ -113,8 +116,8 @@ void NFCInterface::ApplyStyles()
     int h = height();
 
     // Базовые размеры шрифтов (относительно экрана)
-    int baseFontSize = qMax(12, h / 40);  // Минимум 12px
-    int buttonFontSize = qMax(14, h / 35);
+    int baseFontSize = qMax(14, h / 35);  // Минимум 14px
+    int buttonFontSize = qMax(16, h / 30);
 
     QString styleSheet = QString(R"(
         QMainWindow {
@@ -128,6 +131,7 @@ void NFCInterface::ApplyStyles()
             font-size: %2px;
             font-weight: bold;
             qproperty-alignment: AlignCenter;
+            min-height: %3px;
         }
 
         QLabel#labelStatus[error="true"] {
@@ -143,17 +147,11 @@ void NFCInterface::ApplyStyles()
         }
 
         QPushButton {
-            font-size: %3px;
+            font-size: %4px;
             font-weight: bold;
-            border: 2px solid black;
-            border-radius: %4px;
-            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                             stop: 0 #f6f7fa, stop: 1 #dadbde);
-        }
-
-        QPushButton:pressed {
-            background-color: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1,
-                                             stop: 0 #dadbde, stop: 1 #f6f7fa);
+            border: 2px solid #333333;
+            border-radius: %5px;
+            min-height: %6px;
         }
 
         QPushButton#pushButtonRead {
@@ -176,26 +174,34 @@ void NFCInterface::ApplyStyles()
 
         QLineEdit {
             font-size: %2px;
-            border: 1px solid black;
-            border-radius: %4px;
-            padding: %5px;
+            border: 1px solid #333333;
+            border-radius: %5px;
+            padding: %7px;
             background-color: white;
+            min-height: %8px;
         }
 
         QLabel {
             font-size: %2px;
             font-weight: bold;
+            color: #333333;
+        }
+
+        QWidget#verticalLayoutWidget, QWidget#horizontalLayoutWidget {
+            background-color: transparent;
         }
     )")
-    .arg(h / 100)           // %1: радиус статуса
-    .arg(baseFontSize)      // %2: базовый размер шрифта
-    .arg(buttonFontSize)    // %3: размер шрифта кнопок
-    .arg(w / 80)            // %4: радиус скругления
-    .arg(h / 150);          // %5: padding
+    .arg(h / 80)             // %1: радиус статуса
+    .arg(baseFontSize)       // %2: базовый размер шрифта
+    .arg(h / 20)             // %3: мин высота статуса
+    .arg(buttonFontSize)     // %4: размер шрифта кнопок
+    .arg(w / 60)             // %5: радиус скругления
+    .arg(h / 15)             // %6: мин высота кнопок
+    .arg(h / 120)            // %7: padding полей
+    .arg(h / 25);            // %8: мин высота полей
 
     this->setStyleSheet(styleSheet);
 }
-
 void NFCInterface::UpdateStatus(const QString &message, bool isError)
 {
     ui->labelStatus->setText(message);
