@@ -10,13 +10,11 @@
 class NFCReader: public NFCBaseClass
 {
     Q_OBJECT
-
-      Q_PROPERTY(NFCInfo _nfcInfo MEMBER _nfcInfo)
 public:
     /**
      * @brief Конструктор класса
      */
-    NFCReader(QObject *parent);
+    NFCReader(NFCInfo &nfcInfo,QObject *parent);
 
 protected slots:
     /**
@@ -35,7 +33,6 @@ protected slots:
      override;
 
 private:
-     NFCInfo _nfcInfo;
 
 signals:
      void InfoReadAndFormated();

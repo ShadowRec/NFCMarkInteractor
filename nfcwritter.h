@@ -9,20 +9,11 @@
 class NFCWritter: public NFCBaseClass
 {
     Q_OBJECT
-
-    Q_PROPERTY(NFCInfo _nfcInfo MEMBER _nfcInfo WRITE SetNFCInfo)
 public:
     /**
      * @brief Конструктор класса
      */
-    NFCWritter();
-
-    /**
-     * @brief Функция для установки значения
-     * _nfcInfo
-     */
-    void SetNFCInfo(NFCInfo *info);
-
+    NFCWritter(NFCInfo &nfcInfo,QObject *parent);
 protected slots:
 
     /**
@@ -37,19 +28,6 @@ protected slots:
      */
     void StartMarkInteraction(QNearFieldTarget *target)
     override;
-
-private:
-    /**
-     * @brief Поле хранящее информацию для метки
-     */
-    NFCInfo* _nfcInfo;
-
-    /**
-     * @brief Флаг для проверки на заполненость
-     * поля _nfcInfo
-     */
-    bool _InfoIsNotNull;
-
 signals:
     /**
      * @brief Сигнал, что зажигаеться при

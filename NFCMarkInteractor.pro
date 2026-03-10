@@ -2,6 +2,9 @@ QT += quick
 QT += nfc
 QT += core gui widgets
 CONFIG += c++11
+# Автоматическая очистка при пересборке
+QMAKE_CLEAN += $$OUT_PWD/moc_*.cpp
+QMAKE_CLEAN += $$OUT_PWD/moc_*.o
 
 # You can make your code fail to compile if it uses deprecated APIs.
 # In order to do so, uncomment the following line.

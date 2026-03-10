@@ -16,12 +16,13 @@
 class NFCBaseClass:public QObject
 {
      Q_OBJECT
+     Q_PROPERTY(NFCInfo *_nfcInfo READ GetNfcInfo)
 public:
     /**
      * @brief Конструктор класса NFCBaseClass
      * @param parent - ссылка на родителя
      */
-    NFCBaseClass(QObject *parent = nullptr);
+    NFCBaseClass(NFCInfo &nfcInfo, QObject *parent = nullptr);
     /**
      * @brief Запуск поиска метки
      */
@@ -31,6 +32,11 @@ public:
      * @brief Остановка поиска метки
      */
     void StopMarkDetection();
+
+    /**
+     * @brief Функция считывания поля _nfcInfo
+     */
+    NFCInfo* GetNfcInfo();
 
 protected slots:
 
@@ -58,6 +64,8 @@ protected slots:
      */
     void EndMarkInteraction(QNearFieldTarget *target);
 
+protected:
+     NFCInfo *_nfcInfo;
 private:
     /**
      * @brief Поле, содержащее менеджер полей NFC
@@ -67,6 +75,8 @@ private:
      * @brief Поле, хранящее текущую метку
      */
     QNearFieldTarget *_currentMark;
+
+
 };
 
 #endif // NFCBASECLASS_H

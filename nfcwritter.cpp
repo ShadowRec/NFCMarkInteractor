@@ -1,13 +1,14 @@
 #include "nfcwritter.h"
 
-NFCWritter::NFCWritter()
+NFCWritter::NFCWritter(NFCInfo &nfcInfo,QObject *parent)
+    : NFCBaseClass(nfcInfo, parent)
 {
     std::cout<<"Создан врайтер.\n";
 }
+
+
 void NFCWritter::StartMarkInteraction(QNearFieldTarget *target)
 {
-    if(this->_InfoIsNotNull)
-    {
           QByteArray jsonData = _nfcInfo->Serialize();
 
            QNdefRecord record;
@@ -24,18 +25,6 @@ void NFCWritter::StartMarkInteraction(QNearFieldTarget *target)
            if (request.isValid()) {
                   qDebug() << "Запись данных начата, размер:" << jsonData.size();
               }
-    }
-
-    else
-    {
-        throw  std::string("NFC_Info_Is_Empty");
-    }
-}
-
-void NFCWritter::SetNFCInfo(NFCInfo *info)
-{
-    _nfcInfo = info;
-    _InfoIsNotNull=true;
 }
 
 void NFCWritter::OnMarkInteractionSuccess(const QNdefMessage &message)

@@ -1,7 +1,7 @@
 #include "nfcreader.h"
 
-NFCReader::NFCReader(QObject *parent)
-    : NFCBaseClass(parent)
+NFCReader::NFCReader(NFCInfo &nfcInfo, QObject *parent)
+    : NFCBaseClass(nfcInfo,parent)
 {
     std::cout<<"Создан ридер.\n";
 }
@@ -35,7 +35,7 @@ void NFCReader::OnMarkInteractionSuccess(const QNdefMessage &message)
           // Ищем нашу запись
           if (record.typeNameFormat() == QNdefRecord::Mime &&
               record.type() == "application/x-markdata") {
-              _nfcInfo.Deserialize(record.payload());
+              _nfcInfo->Deserialize(record.payload());
               emit InfoReadAndFormated();
               return;
           }
