@@ -8,16 +8,17 @@ NFCReader::NFCReader(NFCInfo &nfcInfo, QObject *parent)
 
 void NFCReader::StartMarkInteraction(QNearFieldTarget *target)
 {
+       this->_currentMark = target;
        connect(target, &QNearFieldTarget::ndefMessageRead,
              this, [this](const QNdefMessage &message){
            this->OnMarkInteractionSuccess(message);
-       });
+       }, Qt::UniqueConnection);
 
           connect(target, &QNearFieldTarget::error,
                   this, [this](QNearFieldTarget::Error error,
                               const QNearFieldTarget::RequestId &request) {
                       this->OnMarkInteractionFail(error, request);
-                  });
+                  }, Qt::UniqueConnection);
 
         QNearFieldTarget::RequestId request = target->readNdefMessages();
 
@@ -36,7 +37,7 @@ void NFCReader::OnMarkInteractionSuccess(const QNdefMessage &message)
           if (record.typeNameFormat() == QNdefRecord::Mime &&
               record.type() == "application/x-markdata") {
               _nfcInfo->Deserialize(record.payload());
-              emit InfoReadAndFormated();
+              emit InteractionComplete();
               return;
           }
       }

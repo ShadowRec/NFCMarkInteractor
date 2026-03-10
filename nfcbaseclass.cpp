@@ -32,6 +32,11 @@ void NFCBaseClass::StopMarkDetection()
     if (_NFCmanager->isAvailable())
         {
             _NFCmanager->stopTargetDetection();
+            if(_currentMark!= nullptr)
+            {
+                _currentMark->deleteLater();
+                _currentMark=nullptr;
+            }
         }
 
     else {
@@ -58,6 +63,7 @@ void NFCBaseClass::OnMarkInteractionFail(QNearFieldTarget::Error error,
                                       const QNearFieldTarget::
                                       RequestId &id)
 {
+    emit InteractionError();
     QString errorMessage;
     switch(error) {
        case QNearFieldTarget::NoError:

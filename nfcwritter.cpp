@@ -9,6 +9,7 @@ NFCWritter::NFCWritter(NFCInfo &nfcInfo,QObject *parent)
 
 void NFCWritter::StartMarkInteraction(QNearFieldTarget *target)
 {
+          _currentMark=target;
           QByteArray jsonData = _nfcInfo->Serialize();
 
            QNdefRecord record;
@@ -29,5 +30,5 @@ void NFCWritter::StartMarkInteraction(QNearFieldTarget *target)
 
 void NFCWritter::OnMarkInteractionSuccess(const QNdefMessage &message)
 {
-    emit WritingComplete();
+    emit InteractionComplete();
 }

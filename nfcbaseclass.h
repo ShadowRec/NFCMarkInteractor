@@ -66,16 +66,27 @@ protected slots:
 
 protected:
      NFCInfo *_nfcInfo;
+     /**
+      * @brief Поле, хранящее текущую метку
+      */
+     QNearFieldTarget *_currentMark;
 private:
     /**
      * @brief Поле, содержащее менеджер полей NFC
      */
     QNearFieldManager *_NFCmanager;
-    /**
-     * @brief Поле, хранящее текущую метку
-     */
-    QNearFieldTarget *_currentMark;
 
+signals:
+    /**
+     * @brief Сигнал, что зажигается при успешном выполнениия
+     * взаимодействия
+     */
+    void InteractionComplete();
+    /**
+     * @brief Сигнал, что зажигается при ошибке во время
+     *  выполнениия  взаимодействия
+     */
+    void InteractionError();
 
 };
 

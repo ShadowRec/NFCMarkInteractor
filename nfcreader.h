@@ -32,10 +32,6 @@ protected slots:
      void StartMarkInteraction(QNearFieldTarget *target)
      override;
 
-private:
-
-signals:
-     void InfoReadAndFormated();
 };
 
 

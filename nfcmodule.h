@@ -4,6 +4,9 @@
 #include <QObject>
 #include <nfcreader.h>
 #include <nfcwritter.h>
+#include <QObject>
+#include <QEventLoop>
+
 
 /**
  * @brief Класс модуля, что отвечает за взаимодействия
@@ -24,31 +27,79 @@ public:
    void StartReading();
 
    /**
-   * @brief Остановить чтение марки
-   */
-   void StopReading();
-
-   /**
     * @brief Начать запись на марку
     */
    void StartWriting();
+
+   /**
+   * @brief Отменить чтение марки
+   */
+   void CancelWriting();
+
+   /**
+    * @brief Отменить запись на марку
+    */
+   void CancelReading();
+
+private:
 
    /**
     * @brief Остановить запись на марку
     */
    void StopWriting();
 
+   /**
+   * @brief Остановить чтение марки
+   */
+   void StopReading();
 
-private:
      NFCInfo *_nfcInfo;
      NFCWritter *_nfcWritter;
      NFCReader *_nfcReader;
 
 
 signals:
-    void StopWritingProcess();
+     /**
+     * @brief Сигнал для отмены записи
+     */
+    void CancelWritingProcess();
+    /**
+     * @brief Сигнал для отмены чтения
+     */
+    void CancelReadingProcess();
+    /**
+     * @brief Сигнал, что зажигается при успешной
+     *  Записи
+     */
+    void WritingComplete();
+    /**
+     * @brief Сигнал, что зажигаеться при успешном
+     *  чтении
+     */
+    void ReadingComplete();
 
-    void StopReadingProcess();
+    /**
+     * @brief Сигнал, что зажигаеться при ошибке
+     *  при чтении
+     */
+    void ReadingFail();
+
+    /**
+     * @brief Сигнал, что зажигаеться при ошибке
+     *  при записи
+     */
+    void WrittinfFail();
+
+    /**
+     * @brief Сигнал, что зажигаеться при отмене
+     *  чтения
+     */
+    void ReadingCanceled();
+    /**
+     * @brief Сигнал, что зажигается при отмене
+     *  Записи
+     */
+    void WritingCanceled();
 };
 
 

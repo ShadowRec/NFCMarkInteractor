@@ -28,12 +28,6 @@ protected slots:
      */
     void StartMarkInteraction(QNearFieldTarget *target)
     override;
-signals:
-    /**
-     * @brief Сигнал, что зажигаеться при
-     * завершении процесса записи на метку
-     */
-    void WritingComplete();
 };
 
 #endif // NFCWRITTER_H
