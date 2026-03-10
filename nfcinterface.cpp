@@ -30,6 +30,12 @@ NFCInterface::NFCInterface(QWidget *parent) :
     //Стили если надо
     ApplyStyles();
 
+    //Подключения сигнала от кнопок
+    connect(ui->pushButtonRead, &QPushButton::pressed, this, &NFCInterface::OnPushButtonReadPressed);
+    connect(ui->pushButtonRead, &QPushButton::released, this, &NFCInterface::OnPushButtonReadReleased);
+    connect(ui->pushButtonWrite, &QPushButton::pressed, this, &NFCInterface::OnPushButtonWritePressed);
+    connect(ui->pushButtonWrite, &QPushButton::released, this, &NFCInterface::OnPushButtonWriteReleased);
+
     //Установка базового статуса
     UpdateStatus("Готов к работе");
 }
