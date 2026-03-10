@@ -1,9 +1,10 @@
 #include "nfcbaseclass.h"
 
-NFCBaseClass::NFCBaseClass(QObject *parent)
+NFCBaseClass::NFCBaseClass(NFCInfo &nfcInfo,QObject *parent)
     : QObject(parent)
         , _NFCmanager(nullptr)
         , _currentMark(nullptr)
+        , _nfcInfo(&nfcInfo)
 {
    _NFCmanager = new QNearFieldManager(this);
 
@@ -46,6 +47,11 @@ void NFCBaseClass::EndMarkInteraction(QNearFieldTarget *target)
         _currentMark=nullptr;
     }
     target->deleteLater();
+}
+
+NFCInfo* NFCBaseClass::GetNfcInfo()
+{
+    return _nfcInfo;
 }
 
 void NFCBaseClass::OnMarkInteractionFail(QNearFieldTarget::Error error,

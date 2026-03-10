@@ -1,8 +1,9 @@
 #include "nfcmodule.h"
 
 NFCModule::NFCModule(QObject *parent)
-:NFCBaseClass(parent)
+    :QObject(parent)
+    ,_nfcInfo(new NFCInfo(this))
+    ,_nfcReader(new NFCReader(*_nfcInfo,this))
 {
-    _nfcReader = new NFCReader();
-
+     std::cout<<"Создан NFC модуль";
 }

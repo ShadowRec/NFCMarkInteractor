@@ -22,7 +22,7 @@ class NFCInfo: public QObject
     Q_PROPERTY(QString _serialNumber MEMBER _serialNumber WRITE SetSerialNumber)
     Q_PROPERTY(QString _description MEMBER _description WRITE SetDescription)
     Q_PROPERTY(QDate _date MEMBER _date WRITE SetDate)
-    Q_PROPERTY(Qstring  _comment MEMBER _comment WRITE SetComment)
+    Q_PROPERTY(QString  _comment MEMBER _comment WRITE SetComment)
 public:
 
     /**

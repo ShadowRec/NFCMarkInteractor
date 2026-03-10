@@ -40,8 +40,10 @@ public:
 
 
 private:
-     NFCWritter _nfcWritter;
-     NFCReader _nfcReader;
+     NFCInfo *_nfcInfo;
+     NFCWritter *_nfcWritter;
+     NFCReader *_nfcReader;
+
 
 signals:
     void StopWritingProcess();
