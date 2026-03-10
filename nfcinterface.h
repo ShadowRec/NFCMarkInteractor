@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <QTimer>
+#include <QResizeEvent>
+#include <QStyle>
 
 namespace Ui {
 class NFCInterface;
@@ -15,6 +17,8 @@ class NFCInterface : public QMainWindow
 public:
     NFCInterface(QWidget *parent = nullptr);
     ~NFCInterface();
+
+    void resizeEvent(QResizeEvent *event) override;
 
 private slots:
     //Слоты для нажатия, отпускания кнопок
@@ -36,6 +40,8 @@ private:
     bool ValidateInputs();
     void ShowResultDialog(const QString &title, const QString &message);
     void ResetToDefault();
+
+    void AdjustLayout();
     //стили возможно
     void ApplyStyles();
 
