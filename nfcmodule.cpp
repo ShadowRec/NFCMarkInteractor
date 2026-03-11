@@ -73,3 +73,8 @@ void NFCModule::CancelWriting()
 {
     emit CancelWritingProcess();
 }
+
+ NFCInfo* NFCModule::GetNfcInfoPointer()
+{
+    return _nfcInfo;
+}

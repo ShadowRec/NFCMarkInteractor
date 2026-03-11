@@ -41,6 +41,12 @@ public:
     */
    void CancelReading();
 
+   /**
+    * @brief Возвращает указатель на поле
+    * _nfcInfo
+    */
+    NFCInfo* GetNfcInfoPointer();
+
 private:
 
    /**

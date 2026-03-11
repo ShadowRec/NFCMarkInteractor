@@ -5,6 +5,8 @@
 #include <QTimer>
 #include <QResizeEvent>
 #include <QStyle>
+#include <nfcmodule.h>
+#include <nfcinfo.h>
 
 namespace Ui {
 class NFCInterface;
@@ -42,6 +44,10 @@ private:
     void AdjustLayout();
     //стили возможно
     void ApplyStyles();
+
+    NFCModule _nfcModule;
+    NFCInfo *_nfcInfo;
+
 
 };
 
