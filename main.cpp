@@ -1,7 +1,5 @@
 #include <QApplication>
-#include <QMainWindow>
-#include <QVBoxLayout>
-#include "ui_nfcinterface.h"
+#include "nfcinterface.h"
 
 int main(int argc, char *argv[])
 {
@@ -9,10 +7,8 @@ int main(int argc, char *argv[])
 
     QApplication app(argc, argv);
 
-    QMainWindow window;
-        Ui::NFCInterface ui;
-        ui.setupUi(&window);
-        window.show();
+    NFCInterface window;
+    window.show();
 
     return app.exec();
 }

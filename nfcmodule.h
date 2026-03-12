@@ -94,7 +94,7 @@ signals:
      * @brief Сигнал, что зажигаеться при ошибке
      *  при записи
      */
-    void WrittinfFail();
+    void WrittingFail();
 
     /**
      * @brief Сигнал, что зажигаеться при отмене

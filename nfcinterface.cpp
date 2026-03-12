@@ -16,13 +16,23 @@ NFCInterface::NFCInterface(QWidget *parent) :
 
     _nfcInfo = new NFCInfo(this);
     _nfcModule= new NFCModule(this, *_nfcInfo);
+
+    // Подключаем сигналы от NFC модуля
+    connect(_nfcModule, &NFCModule::ReadingComplete,
+            this, &NFCInterface::onNFCReadComplete);
+    connect(_nfcModule, &NFCModule::ReadingFail,
+            this, &NFCInterface::onNFCReadFailed);
+    connect(_nfcModule, &NFCModule::WritingComplete,
+            this, &NFCInterface::onNFCWriteComplete);
+    connect(_nfcModule, &NFCModule::WrittingFail,
+            this, &NFCInterface::onNFCWriteFailed);
+
     // Настройка окна для Android
     setWindowTitle("NFC Метка");
 
     //Указываем на NFCInfo NFC модуля
 
     QRect screenGeometry = QApplication::primaryScreen()->availableGeometry();
-
     setFixedSize(screenGeometry.size());
 
     // Настройка таймера
@@ -277,12 +287,19 @@ void NFCInterface::ShowResultDialog(const QString &title, const QString &message
 
 void NFCInterface::ResetToDefault()
 {
+    // Отменяем NFC операции если они ещё выполняются
+    if (isReadingPressed) {
+        _nfcModule->CancelReading();
+    }
+    if (isWritingPressed) {
+        _nfcModule->CancelWriting();
+    }
+
     isReadingPressed = false;
     isWritingPressed = false;
     detectionTimer->stop();
     UpdateStatus("Готов к работе");
 
-    // Сбрасываем стили кнопок
     ui->pushButtonRead->setStyleSheet("");
     ui->pushButtonWrite->setStyleSheet("");
 }
@@ -299,10 +316,16 @@ void NFCInterface::on_pushButtonRead_pressed()
     isReadingPressed = true;
     UpdateStatus("Поднесите устройство к NFC метке для чтения");
 
-    // Визуальный эффект нажатия
     ui->pushButtonRead->setStyleSheet("background-color: #1976D2;");
 
-    detectionTimer->start();
+    // Запускаем поиск метки
+    try {
+        _nfcModule->StartReading();
+        detectionTimer->start(); // Таймер на случай если метка не найдена
+    } catch (const std::string &e) {
+        UpdateStatus(QString("Ошибка NFC: %1").arg(e.c_str()), true);
+        ResetToDefault();
+    }
 }
 
 void NFCInterface::on_pushButtonRead_released()
@@ -325,20 +348,25 @@ void NFCInterface::on_pushButtonWrite_pressed()
         return;
     }
 
-    qDebug() << "Кнопка записи нажата";
-
     if (!ValidateInputs())
     {
         return;
     }
 
+    qDebug() << "Кнопка записи нажата";
     isWritingPressed = true;
     UpdateStatus("Поднесите устройство к NFC метке для записи");
 
-    // Визуальный эффект нажатия
     ui->pushButtonWrite->setStyleSheet("background-color: #388E3C;");
 
-    detectionTimer->start();
+    // Запускаем поиск метки
+    try {
+        _nfcModule->StartWriting();
+        detectionTimer->start(); // Таймер на случай если метка не найдена
+    } catch (const std::string &e) {
+        UpdateStatus(QString("Ошибка NFC: %1").arg(e.c_str()), true);
+        ResetToDefault();
+    }
 }
 
 void NFCInterface::on_pushButtonWrite_released()
@@ -361,16 +389,91 @@ void NFCInterface::SimulatedTagDetected()
         return;
     }
 
+    // Останавливаем таймер - метка найдена
+       detectionTimer->stop();
+
     if (isReadingPressed)
     {
         UpdateStatus("Метка обнаружена, чтение данных...");
-        // Здесь будет реальное чтение
+
+        // Запускаем реальное чтение
+        _nfcModule->StartReading();
     }
     else if (isWritingPressed)
     {
         UpdateStatus("Метка обнаружена, запись данных...");
-        // Здесь будет реальная запись
+
+        try {
+            _nfcInfo->SetName(ui->lineEditName->text());
+            _nfcInfo->SetSerialNumber(ui->lineEditNumber->text());
+            _nfcInfo->SetDescription(ui->lineEditDescription->text());
+            _nfcInfo->SetComment(ui->lineEditComment->text());
+            _nfcInfo->SetDate(QDate::fromString(ui->lineEditDate->text(), "dd.MM.yyyy"));
+
+            _nfcModule->StartWriting();
+        }  catch (const std::string &e) {
+            UpdateStatus(QString("Ошибка: %1").arg(e.c_str()), true);
+            ResetToDefault();
+        }
+
+
+
+        UpdateStatus("Запись завершена");
+    }
+}
+
+void NFCInterface::onNFCReadComplete()
+{
+    // Обновляем поля из прочитанных данных
+    ui->lineEditName->setText(_nfcInfo->property("_name").toString());
+    ui->lineEditNumber->setText(_nfcInfo->property("_serialNumber").toString());
+    ui->lineEditDescription->setText(_nfcInfo->property("_description").toString());
+    ui->lineEditComment->setText(_nfcInfo->property("_comment").toString());
+
+    // Дата может требовать специальной обработки
+    QDate date = _nfcInfo->property("_date").toDate();
+    if (date.isValid()) {
+        ui->lineEditDate->setText(date.toString("dd.MM.yyyy"));
     }
 
-    QTimer::singleShot(500, this, &NFCInterface::ResetToDefault);
+    UpdateStatus("Чтение успешно завершено");
+    ShowResultDialog("Успех", "Данные успешно прочитаны с NFC метки");
+    ResetToDefault();
+}
+
+void NFCInterface::onNFCReadFailed()
+{
+    UpdateStatus("Ошибка чтения метки", true);
+    ShowResultDialog("Ошибка", "Не удалось прочитать данные с NFC метки.\n"
+                                "Убедитесь, что метка содержит правильные данные.");
+    ResetToDefault();
+}
+
+void NFCInterface::onNFCWriteComplete()
+{
+    UpdateStatus("Запись успешно завершена");
+    ShowResultDialog("Успех", "Данные успешно записаны на NFC метку");
+    ResetToDefault();
+}
+
+void NFCInterface::onNFCWriteFailed()
+{
+    UpdateStatus("Ошибка записи на метку", true);
+    ShowResultDialog("Ошибка", "Не удалось записать данные на NFC метку.\n"
+                                "Возможно, метка защищена от записи или повреждена.");
+    ResetToDefault();
+}
+
+void NFCInterface::onNFCTimeout()
+{
+    if (isReadingPressed) {
+        UpdateStatus("Время ожидания метки истекло", true);
+        _nfcModule->CancelReading();
+    } else if (isWritingPressed) {
+        UpdateStatus("Время ожидания метки истекло", true);
+        _nfcModule->CancelWriting();
+    }
+
+    ShowResultDialog("Информация", "Метка не найдена. Повторите попытку.");
+    ResetToDefault();
 }

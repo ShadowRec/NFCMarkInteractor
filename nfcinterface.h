@@ -32,6 +32,12 @@ private slots:
 
     void on_pushButtonWrite_released();
 
+    void onNFCReadComplete();
+    void onNFCReadFailed();
+    void onNFCWriteComplete();
+    void onNFCWriteFailed();
+    void onNFCTimeout();
+
 private:
     Ui::NFCInterface *ui;
     QTimer *detectionTimer;

@@ -204,10 +204,7 @@
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">QPushButton {
-    border: 2px solid black;    /* Толщина рамки */
-    border-radius: 4px;       /* Радиус скругления углов */
-}</string>
+        <string notr="true"/>
        </property>
        <property name="text">
         <string>ЧТЕНИЕ</string>
@@ -222,10 +219,7 @@
         </font>
        </property>
        <property name="styleSheet">
-        <string notr="true">QPushButton {
-    border: 2px solid black;    /* Толщина рамки */
-    border-radius: 4px;       /* Радиус скругления углов */
-}</string>
+        <string notr="true"/>
        </property>
        <property name="text">
         <string>ЗАПИСЬ</string>
