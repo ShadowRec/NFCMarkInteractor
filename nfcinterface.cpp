@@ -35,16 +35,6 @@ NFCInterface::NFCInterface(QWidget *parent) :
     // Установка текущей даты
     ui->lineEditDate->setText(QDate::currentDate().toString("dd.MM.yyyy"));
 
-    // Подключение сигналов от кнопок
-    connect(ui->pushButtonRead, &QPushButton::pressed,
-            this, &NFCInterface::OnPushButtonReadPressed);
-    connect(ui->pushButtonRead, &QPushButton::released,
-            this, &NFCInterface::OnPushButtonReadReleased);
-    connect(ui->pushButtonWrite, &QPushButton::pressed,
-            this, &NFCInterface::OnPushButtonWritePressed);
-    connect(ui->pushButtonWrite, &QPushButton::released,
-            this, &NFCInterface::OnPushButtonWriteReleased);
-
     // Применяем стили
     ApplyStyles();
 
@@ -297,7 +287,7 @@ void NFCInterface::ResetToDefault()
     ui->pushButtonWrite->setStyleSheet("");
 }
 
-void NFCInterface::OnPushButtonReadPressed()
+void NFCInterface::on_pushButtonRead_pressed()
 {
     if (isWritingPressed)
     {
@@ -315,7 +305,7 @@ void NFCInterface::OnPushButtonReadPressed()
     detectionTimer->start();
 }
 
-void NFCInterface::OnPushButtonReadReleased()
+void NFCInterface::on_pushButtonRead_released()
 {
     if (!isReadingPressed) return;
 
@@ -327,7 +317,7 @@ void NFCInterface::OnPushButtonReadReleased()
     ResetToDefault();
 }
 
-void NFCInterface::OnPushButtonWritePressed()
+void NFCInterface::on_pushButtonWrite_pressed()
 {
     if (isReadingPressed)
     {
@@ -351,7 +341,7 @@ void NFCInterface::OnPushButtonWritePressed()
     detectionTimer->start();
 }
 
-void NFCInterface::OnPushButtonWriteReleased()
+void NFCInterface::on_pushButtonWrite_released()
 {
     if(!isWritingPressed) return;
 

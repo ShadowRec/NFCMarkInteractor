@@ -21,14 +21,16 @@ public:
     ~NFCInterface();
 
 private slots:
-    //Слоты для нажатия, отпускания кнопок
-    void OnPushButtonReadPressed();
-    void OnPushButtonReadReleased();
-    void OnPushButtonWritePressed();
-    void OnPushButtonWriteReleased();
-
     //Слот для имитации обнаружения метки
     void SimulatedTagDetected();
+
+    void on_pushButtonRead_pressed();
+
+    void on_pushButtonRead_released();
+
+    void on_pushButtonWrite_pressed();
+
+    void on_pushButtonWrite_released();
 
 private:
     Ui::NFCInterface *ui;
