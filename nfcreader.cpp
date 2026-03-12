@@ -3,11 +3,12 @@
 NFCReader::NFCReader(NFCInfo &nfcInfo, QObject *parent)
     : NFCBaseClass(nfcInfo,parent)
 {
-    std::cout<<"Создан ридер.\n";
+    qDebug()<<"Создан ридер.\n";
 }
 
 void NFCReader::StartMarkInteraction(QNearFieldTarget *target)
 {
+       qDebug()<<"Начато чтение";
        this->_currentMark = target;
        connect(target, &QNearFieldTarget::ndefMessageRead,
              this, [this](const QNdefMessage &message){
@@ -24,13 +25,14 @@ void NFCReader::StartMarkInteraction(QNearFieldTarget *target)
 
         if (!request.isValid())
         {
+                 qDebug()<<"Ошибка при запросе чтения";
                 throw  std::string("NFC_Read_Error");
         }
 }
 
 void NFCReader::OnMarkInteractionSuccess(const QNdefMessage &message)
 {
-    std::cout<<"NDEG сообщение, количество записей:"<<message.size();
+    qDebug()<<"NDEG сообщение, количество записей:"<<message.size();
 
     for (const QNdefRecord &record : message) {
           // Ищем нашу запись
@@ -38,6 +40,7 @@ void NFCReader::OnMarkInteractionSuccess(const QNdefMessage &message)
               record.type() == "application/x-markdata") {
               _nfcInfo->Deserialize(record.payload());
               emit InteractionComplete();
+              qDebug()<<"Данные отформатированы";
               return;
           }
       }

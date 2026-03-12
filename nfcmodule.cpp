@@ -4,7 +4,7 @@ NFCModule::NFCModule(QObject *parent, NFCInfo &info)
     :QObject(parent)
     ,_nfcInfo(&info)
     ,_nfcReader(new NFCReader(*_nfcInfo,this))
-    ,_nfcWritter(new NFCWritter(*_nfcInfo,this))
+    ,_nfcWriter(new NFCWritter(*_nfcInfo,this))
 {
     connect(_nfcReader, &NFCReader::InteractionComplete,
             this, [this](){
@@ -12,7 +12,7 @@ NFCModule::NFCModule(QObject *parent, NFCInfo &info)
         emit ReadingComplete();
     });
 
-    connect(_nfcWritter,&NFCWritter::InteractionComplete,
+    connect(_nfcWriter,&NFCWritter::InteractionComplete,
             this, [this](){
         this->StopWriting();
         emit WritingComplete();
@@ -24,10 +24,10 @@ NFCModule::NFCModule(QObject *parent, NFCInfo &info)
         emit ReadingFail();
     });
 
-    connect(_nfcWritter,&NFCWritter::InteractionError,
+    connect(_nfcWriter,&NFCWritter::InteractionError,
             this, [this](){
         this->StopWriting();
-        emit WrittinfFail();
+        emit WritingFail();
     });
 
     connect(this, &NFCModule::CancelReadingProcess,
@@ -41,7 +41,7 @@ NFCModule::NFCModule(QObject *parent, NFCInfo &info)
         this->StopWriting();
         emit WritingCanceled();
     });
-     std::cout<<"Создан NFC модуль";
+     qDebug()<<"Создан NFC модуль";
 }
 
 void NFCModule::StartReading()
@@ -56,12 +56,12 @@ void NFCModule::StopReading()
 
 void NFCModule::StartWriting()
 {
-   _nfcWritter->StartMarkDetection();
+   _nfcWriter->StartMarkDetection();
 }
 
 void NFCModule::StopWriting()
 {
-    _nfcWritter->StopMarkDetection();
+    _nfcWriter->StopMarkDetection();
 }
 
 void NFCModule::CancelReading()
@@ -74,7 +74,3 @@ void NFCModule::CancelWriting()
     emit CancelWritingProcess();
 }
 
- NFCInfo* NFCModule::GetNfcInfoPointer()
-{
-    return _nfcInfo;
-}

@@ -24,7 +24,7 @@ NFCInterface::NFCInterface(QWidget *parent) :
             this, &NFCInterface::onNFCReadFailed);
     connect(_nfcModule, &NFCModule::WritingComplete,
             this, &NFCInterface::onNFCWriteComplete);
-    connect(_nfcModule, &NFCModule::WrittingFail,
+    connect(_nfcModule, &NFCModule::WritingFail,
             this, &NFCInterface::onNFCWriteFailed);
 
     // Настройка окна для Android
@@ -53,6 +53,7 @@ NFCInterface::NFCInterface(QWidget *parent) :
 
     // Установка базового статуса
     UpdateStatus("Готов к работе");
+
 }
 
 NFCInterface::~NFCInterface()
@@ -320,7 +321,7 @@ void NFCInterface::on_pushButtonRead_pressed()
 
     // Запускаем поиск метки
     try {
-        _nfcModule->StartReading();
+       _nfcModule->StartReading();
         detectionTimer->start(); // Таймер на случай если метка не найдена
     } catch (const std::string &e) {
         UpdateStatus(QString("Ошибка NFC: %1").arg(e.c_str()), true);
@@ -361,8 +362,8 @@ void NFCInterface::on_pushButtonWrite_pressed()
 
     // Запускаем поиск метки
     try {
-        _nfcModule->StartWriting();
         detectionTimer->start(); // Таймер на случай если метка не найдена
+
     } catch (const std::string &e) {
         UpdateStatus(QString("Ошибка NFC: %1").arg(e.c_str()), true);
         ResetToDefault();
@@ -409,8 +410,8 @@ void NFCInterface::SimulatedTagDetected()
             _nfcInfo->SetDescription(ui->lineEditDescription->text());
             _nfcInfo->SetComment(ui->lineEditComment->text());
             _nfcInfo->SetDate(QDate::fromString(ui->lineEditDate->text(), "dd.MM.yyyy"));
-
             _nfcModule->StartWriting();
+
         }  catch (const std::string &e) {
             UpdateStatus(QString("Ошибка: %1").arg(e.c_str()), true);
             ResetToDefault();
@@ -477,3 +478,4 @@ void NFCInterface::onNFCTimeout()
     ShowResultDialog("Информация", "Метка не найдена. Повторите попытку.");
     ResetToDefault();
 }
+

@@ -7,6 +7,7 @@ NFCBaseClass::NFCBaseClass(NFCInfo &nfcInfo,QObject *parent)
         , _nfcInfo(&nfcInfo)
 {
    _NFCmanager = new QNearFieldManager(this);
+   qDebug()<<"Менджер создан";
 
        connect(_NFCmanager, &QNearFieldManager::targetDetected,
                this, &NFCBaseClass::StartMarkInteraction);
@@ -20,6 +21,7 @@ void NFCBaseClass::StartMarkDetection()
     if (_NFCmanager->isAvailable())
         {
             _NFCmanager->startTargetDetection();
+            qDebug()<<"Начат Поиск";
         }
 
     else {
@@ -31,6 +33,7 @@ void NFCBaseClass::StopMarkDetection()
 {
     if (_NFCmanager->isAvailable())
         {
+        qDebug()<<"Отстановка поиска";
             _NFCmanager->stopTargetDetection();
             if(_currentMark!= nullptr)
             {
@@ -94,5 +97,6 @@ void NFCBaseClass::OnMarkInteractionFail(QNearFieldTarget::Error error,
            errorMessage += QString("Unknown_err_code");
        }
 
+        qDebug()<<"Ошибка при запросе чтения: "<<errorMessage;
        throw std::string(errorMessage.toStdString());
    }

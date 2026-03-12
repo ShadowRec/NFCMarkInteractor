@@ -8,6 +8,7 @@
 #include <nfcmodule.h>
 #include <nfcinfo.h>
 
+
 namespace Ui {
 class NFCInterface;
 }
@@ -58,5 +59,6 @@ private:
 
 
 };
+
 
 #endif // NFCINTERFACE_H

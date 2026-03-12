@@ -41,11 +41,6 @@ public:
     */
    void CancelReading();
 
-   /**
-    * @brief Возвращает указатель на поле
-    * _nfcInfo
-    */
-    NFCInfo* GetNfcInfoPointer();
 
 private:
 
@@ -60,7 +55,7 @@ private:
    void StopReading();
 
      NFCInfo *_nfcInfo;
-     NFCWritter *_nfcWritter;
+     NFCWritter *_nfcWriter;
      NFCReader *_nfcReader;
 
 
@@ -94,7 +89,7 @@ signals:
      * @brief Сигнал, что зажигаеться при ошибке
      *  при записи
      */
-    void WrittingFail();
+    void WritingFail();
 
     /**
      * @brief Сигнал, что зажигаеться при отмене
