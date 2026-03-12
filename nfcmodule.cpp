@@ -1,8 +1,8 @@
 #include "nfcmodule.h"
 
-NFCModule::NFCModule(QObject *parent)
+NFCModule::NFCModule(QObject *parent, NFCInfo &info)
     :QObject(parent)
-    ,_nfcInfo(new NFCInfo(this))
+    ,_nfcInfo(&info)
     ,_nfcReader(new NFCReader(*_nfcInfo,this))
     ,_nfcWritter(new NFCWritter(*_nfcInfo,this))
 {

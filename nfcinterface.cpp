@@ -10,16 +10,16 @@ NFCInterface::NFCInterface(QWidget *parent) :
     ui(new Ui::NFCInterface),
     detectionTimer(new QTimer(this)),
     isReadingPressed(false),
-    isWritingPressed(false),
-    _nfcModule(this)
+    isWritingPressed(false)
 {
     ui->setupUi(this);
 
+    _nfcInfo = new NFCInfo(this);
+    _nfcModule= new NFCModule(this, *_nfcInfo);
     // Настройка окна для Android
     setWindowTitle("NFC Метка");
 
     //Указываем на NFCInfo NFC модуля
-    _nfcInfo = _nfcModule.GetNfcInfoPointer();
 
     QRect screenGeometry = QApplication::primaryScreen()->availableGeometry();
 

@@ -19,7 +19,7 @@ public:
     /**
      * @brief Конструктор класса
      */
-    NFCModule(QObject *parent);
+    NFCModule(QObject *parent, NFCInfo &info);
 
     /**
     * @brief Начать чтение марки

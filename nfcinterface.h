@@ -45,7 +45,7 @@ private:
     //стили возможно
     void ApplyStyles();
 
-    NFCModule _nfcModule;
+    NFCModule *_nfcModule;
     NFCInfo *_nfcInfo;
 
 
